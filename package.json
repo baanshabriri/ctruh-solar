@@ -1,0 +1,36 @@
+{
+  "name": "solar-host-backend",
+  "version": "1.0.0",
+  "description": "Geospatial Solar Host Backend",
+  "author": "Abhinandan Das",
+  "license": "ISC",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "axios": "^1.15.2",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "dotenv": "^16.4.0",
+    "express": "^4.19.2",
+    "ioredis": "^5.3.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.0.0",
+    "pino": "^9.0.0",
+    "prom-client": "^15.1.0",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.8.3",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.2.0"
+  }
+}
