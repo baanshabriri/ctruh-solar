@@ -1,5 +1,5 @@
 import { queueRedisClient } from "../databases/redis.js";
-import { processNotification } from "../services/event.service.js";
+import { processEvent } from "../services/event.service.js";
 import { getBackoffDelay } from "../utils/backoff.js";
 import {
     eventsProcessed,
@@ -13,9 +13,8 @@ async function retryWithBackoff(event, systemLogger, queueRedisClient) {
     const retries = event.retries || 0;
     if (retries < 3) {
         eventsRetried.inc();
-        event.retries = retries + 1;
         const delay = getBackoffDelay(retries);
-
+        event.retries = retries + 1;
         systemLogger.warn({
             message: "Retrying event with backoff",
             eventId: event.id,
@@ -43,7 +42,6 @@ async function retryWithBackoff(event, systemLogger, queueRedisClient) {
             message: "Pushing event to DLQ after max retries",
             eventId: event.id,
             retries: event.retries,
-            delay,
         });
         await queueRedisClient.lpush(
             "meeting_dlq",
@@ -79,7 +77,7 @@ export async function startConsumer({ logger }) {
             }
             const start = Date.now();
             try {
-                await processNotification(event);
+                await processEvent(event);
                 eventsProcessed.inc();
                 eventProcessingTime.observe((Date.now() - start) / 1000);
                 await queueRedisClient.set(idempotencyKey, "processed", "EX", 60 * 60);
