@@ -216,6 +216,11 @@ active_socket_connections
 * Username: `admin`
 * Password: `admin`
 
+Connect datasource
+```bash
+http://solar-prometheus:9090
+```
+
 Import dashboard from:
 
 ```text

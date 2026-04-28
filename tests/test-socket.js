@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 const SERVER_URL = "http://localhost:3000";
 
-const NUM_CONSULTANTS = 50;
+const NUM_CONSULTANTS = 100;
 const UPDATE_INTERVAL = 2000;
 const TENANT_ID = "123";
 
