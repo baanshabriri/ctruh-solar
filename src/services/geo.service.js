@@ -2,6 +2,7 @@ import config from '../config/config.js';
 import { redisClient } from '../databases/redis.js';
 import Host from '../models/host.model.js';
 import { systemLogger } from '../logger/index.js';
+import { cacheHits, cacheMisses } from '../metrics/index.js';
 
 const { GEO_HOSTS_CACHE_KEY_PREFIX } = config;
 function getGeoCacheKey(tenantId) {
@@ -25,12 +26,14 @@ export async function getNearbyHosts({ tenantId, lat, lng, radius = 5000, count 
         const key = getGeoCacheKey(tenantId);
         let nearbyHostIds = await redisClient.georadius(key, lng, lat, radius, 'm', "WITHDIST", "COUNT", count, "ASC");
         if (nearbyHostIds.length > 0) {
+            cacheHits.inc();
             return nearbyHostIds.map(([id, distance]) => ({
                 hostId: id,
                 distance: parseFloat(distance),
                 source: 'cache',
             }));
         }
+        cacheMisses.inc();
         nearbyHostIds = await Host.aggregate([
             {
                 $geoNear: {
