@@ -266,7 +266,7 @@ src/
 
 ## 🏗️ Architecture Diagram
 
-![Architecture](./assets/architecture.png)
+![Architecture](./assets/solar_aws_architecture.drawio.png)
 
 ---
 
