@@ -1,20 +1,40 @@
 curl -X POST http://localhost:3000/api/auth/signup \
 -H "Content-Type: application/json" \
 -d '{
-  "username": "user1",
+  "username": "user2",
   "password": "pass123",
-  "tenantId": "123"
+  "tenantId": "T1"
 }'
 
 
 curl -X POST http://localhost:3000/api/auth/login \
 -H "Content-Type: application/json" \
 -d '{
-  "username": "user1",
+  "username": "user2",
   "password": "pass123"
 }'
 
 
 curl -X GET "http://localhost:3000/api/hosts/nearby?lat=12.9716&lng=77.5946&radius=5000&limit=20" \
--H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVmZDJhZjg5N2M0MzdiNzUxMjU3YmYiLCJ0ZW5hbnRJZCI6IjEyMyIsImlhdCI6MTc3NzMyNDcyOSwiZXhwIjoxNzc3MzQ2MzI5fQ.h6AlXFBkkw3KqnnaWiRH5W38NW1rlPaFg02rGDomjKU" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVmZDJhZjg5N2M0MzdiNzUxMjU3YmYiLCJ0ZW5hbnRJZCI6IjEyMyIsImlhdCI6MTc3NzQwODM2OSwiZXhwIjoxNzc3NDI5OTY5fQ.7deOer0jonv5gR2fab_ATS6OQTvcWzO2tMeN9wgwiIs" \
 -H "x-tenant-id: 123"
+
+
+curl -X GET "http://localhost:3000/api/hosts/nearby?lat=12.9716&lng=77.5946&radius=5000&limit=20" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWYxMTljNDYzNTZkMzYwZTVlMWZkZjQiLCJ0ZW5hbnRJZCI6IlQxIiwiaWF0IjoxNzc3NDA4NDYyLCJleHAiOjE3Nzc0MzAwNjJ9._pubryjCNmBbFyaTlenmzHwPBckmEZ5vP9i2Qiln37I" \
+-H "x-tenant-id: T1"
+
+--- LARGER RADIUS
+curl -X GET "http://localhost:3000/api/hosts/nearby?lat=12.9716&lng=77.5946&radius=10000&limit=50" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVmZDJhZjg5N2M0MzdiNzUxMjU3YmYiLCJ0ZW5hbnRJZCI6IjEyMyIsImlhdCI6MTc3NzQwODM2OSwiZXhwIjoxNzc3NDI5OTY5fQ.7deOer0jonv5gR2fab_ATS6OQTvcWzO2tMeN9wgwiIs" \
+-H "x-tenant-id: T2"
+
+--- FULL COVERAGE
+curl -X GET "http://localhost:3000/api/hosts/nearby?lat=12.9716&lng=77.5946&radius=25000&limit=100" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVmZDJhZjg5N2M0MzdiNzUxMjU3YmYiLCJ0ZW5hbnRJZCI6IjEyMyIsImlhdCI6MTc3NzQwODM2OSwiZXhwIjoxNzc3NDI5OTY5fQ.7deOer0jonv5gR2fab_ATS6OQTvcWzO2tMeN9wgwiIs" \
+-H "x-tenant-id: T3"
+
+-- EMPTY
+curl -X GET "http://localhost:3000/api/hosts/nearby?lat=13.5&lng=78.5&radius=5000" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWVmZDJhZjg5N2M0MzdiNzUxMjU3YmYiLCJ0ZW5hbnRJZCI6IjEyMyIsImlhdCI6MTc3NzQwODM2OSwiZXhwIjoxNzc3NDI5OTY5fQ.7deOer0jonv5gR2fab_ATS6OQTvcWzO2tMeN9wgwiIs" \
+-H "x-tenant-id: T1"
