@@ -264,6 +264,12 @@ src/
 
 ---
 
+## 🏗️ Architecture Diagram
+
+![Architecture](./assets/architecture.png)
+
+---
+
 ## 🧠 Notes
 
 * Designed for scalability and low-latency geo queries
