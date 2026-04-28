@@ -1,0 +1,53 @@
+name: Solar CI Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code (CRITICAL)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Start full stack
+      - name: Start services (docker-compose)
+        run: docker compose up -d --build
+
+      # 3. Debug containers
+      - name: List containers
+        run: docker ps
+
+      # 4. Wait for app to be ready
+      - name: Wait for app
+        run: |
+          for i in {1..15}; do
+            echo "Attempt $i..."
+            if curl -f http://localhost:3000/health; then
+              echo "App is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "App failed to start"
+          docker logs $(docker ps -q) || true
+          exit 1
+
+      # 5. Final health check
+      - name: Health check
+        run: curl -f http://localhost:3000/health
+
+      # 6. Show logs
+      - name: Show logs
+        if: always()
+        run: docker logs $(docker ps -q) || true
+
+      # 7. Cleanup
+      - name: Stop services
+        if: always()
+        run: docker compose down -v
