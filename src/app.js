@@ -8,6 +8,9 @@ import { systemLogger } from "./logger/index.js";
 import routes from "./routes/index.js";
 import authRoutes from "./routes/auth.routes.js";
 import { authMiddleware } from "./middleware/auth.middleware.js";
+import { register } from "./metrics/index.js";
+import { metricsMiddleware } from "./middleware/metrics.middleware.js";
+import { rateLimiter } from "./middleware/ratelimiter.middleware.js";
 
 
 export default function getHttpServer() {
@@ -50,7 +53,12 @@ export default function getHttpServer() {
     });
     app.use(compression());
     app.use(cors());
-    app.use("/api/auth", authRoutes);
+    app.use(metricsMiddleware);
+    app.use("/metrics", async (req, res) => {
+        res.set("Content-Type", register.contentType);
+        res.end(await register.metrics());
+    });
+    app.use("/api/auth", rateLimiter({ window: 60, max: 20 }), authRoutes);
     app.use("/api", authMiddleware, routes);
     const httpServer = http.createServer(app);
 
