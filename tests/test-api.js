@@ -30,7 +30,7 @@ async function callNearby(token, index) {
                 },
             }
         );
-
+        console.log(JSON.stringify(res.data));
         console.log(`✅ [${index}] Success (${res.status})`);
         return "success";
 

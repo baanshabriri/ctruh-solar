@@ -1,6 +1,6 @@
 import { updateConsultantLocation } from "../services/consultant.service.js";
 import { activeConnections, consultantLocationUpdates } from "../metrics/index.js";
-export function initSocket(io, redisClient, { systemLogger }) {
+export function initSocket(io, { systemLogger }) {
     io.use((socket, next) => {
         const tenantId = socket.handshake.auth?.tenantId;
         if (!tenantId) {
